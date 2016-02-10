@@ -15,14 +15,14 @@ module Main (main) where
 
 data Point' = Point {x :: Float, y :: Float} deriving (Show, Eq)
 
-topLeft = Point 1.0 3.0
-topRight = Point 2.0 3.0
-rightTop = Point 3.0 2.0
+topLeft =     Point 1.0 3.0
+topRight =    Point 2.0 3.0
+rightTop =    Point 3.0 2.0
 rightBottom = Point 3.0 1.0
 bottomRight = Point 2.0 0.0
-bottomLeft = Point 1.0 0.0
-leftBottom = Point 0.0 1.0
-leftTop = Point 0.0 2.0
+bottomLeft =  Point 1.0 0.0
+leftBottom =  Point 0.0 1.0
+leftTop =     Point 0.0 2.0
 
 thePoints :: [Point']
 thePoints = [topRight, topLeft, rightTop, rightBottom, bottomRight, bottomLeft, leftBottom, leftTop]
@@ -31,11 +31,11 @@ data LineSegment' = LineSegment {start :: Point', end :: Point'} deriving (Show,
 
 allPossibleLinesFor :: [Point'] -> [LineSegment']
 allPossibleLinesFor [] = []
-allPossibleLinesFor (p:pTail) = allLinesForFirstPoint ++ allPossibleLinesFor pTail where
- allLinesForFirstPoint = map (\otherPoint -> LineSegment p otherPoint) pTail
+allPossibleLinesFor (p:pointsLeft) = allLinesForFirstPoint ++ allPossibleLinesFor pointsLeft where
+ allLinesForFirstPoint = map (\otherPoint -> LineSegment p otherPoint) pointsLeft
 
-pointIsInsideRectangle :: Point' -> Bool
-pointIsInsideRectangle (Point x y) = (x >=0) && (x<=3) && (y>=0) && (y<=3)
+isPointInsideRectangle :: Point' -> Bool
+isPointInsideRectangle (Point x y) = (x >=0) && (x<=3) && (y>=0) && (y<=3)
 
 -- line equation y = ax + b
 aFor :: LineSegment' -> Float
@@ -68,7 +68,7 @@ intersectionPointFor l1 l2
 
 maybePointIsInsideRectangle :: Maybe Point' -> Bool
 maybePointIsInsideRectangle Nothing = False
-maybePointIsInsideRectangle (Just intersection) = pointIsInsideRectangle intersection
+maybePointIsInsideRectangle (Just intersection) = isPointInsideRectangle intersection
 
 lineSegmentsIntersect :: LineSegment' -> LineSegment' -> Bool
 lineSegmentsIntersect l1 l2 = maybePointIsInsideRectangle $ intersectionPointFor l1 l2
