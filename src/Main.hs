@@ -17,7 +17,7 @@ module Main (main) where
 data Point' = Point {x :: Float, y :: Float} deriving (Show)
 
 instance Eq Point' where
-  (Point x y) == (Point x2 y2) = (x-x2 < 0.01) && (y-y2 < 0.01)
+  (Point x y) == (Point x2 y2) = (abs (x-x2) < 0.01) && ( abs (y-y2) < 0.01)
 
 topLeft =     Point (-1.0)  2.0
 topRight =    Point   1.0   2.0
@@ -91,8 +91,34 @@ rotatePoint :: Point' -> Point'
 rotatePoint (Point x y) = Point (x * cos angle - y * sin angle) (x * sin angle + y * cos angle) where
   angle = -pi / 2
 
-rotate :: LineSegment' -> LineSegment'
-rotate (LineSegment p1 p2) = LineSegment (rotatePoint p1) (rotatePoint p2)
+rotateLine :: LineSegment' -> LineSegment'
+rotateLine (LineSegment p1 p2) = LineSegment (rotatePoint p1) (rotatePoint p2)
+
+data Piece' = Piece [LineSegment'] deriving (Show, Eq)
+
+rotatePiece :: Piece' -> Piece'
+rotatePiece (Piece lines) = Piece (map rotateLine lines)
+
+makeAPieceForEachLineSegment :: [LineSegment'] -> [Piece']
+makeAPieceForEachLineSegment lines = map (\line -> Piece [line]) lines
+
+removePieceFrom :: Piece' -> [Piece'] -> [Piece']
+removePieceFrom p pList = filter (\piece -> p /= piece) pList
+
+removePiecesFrom :: [Piece'] -> [Piece'] -> [Piece']
+removePiecesFrom [] pieces = pieces
+removePiecesFrom (p:pTail) piecesList = removePiecesFrom pTail (removePieceFrom p piecesList)
+
+removePieceOnAnyRotationFrom :: Piece' -> [Piece'] -> [Piece']
+removePieceOnAnyRotationFrom p pList = removePiecesFrom (take 4 (iterate rotatePiece p)) pList
+
+onlyUniquePieces :: [Piece'] -> [Piece']
+onlyUniquePieces [] = []
+onlyUniquePieces (p:pieces) = p : onlyUniquePieces (removePieceOnAnyRotationFrom p pieces)
+
+pieceL = Piece [LineSegment topLeft topRight]
+pieceC = Piece [LineSegment rightTop rightBottom]
+
 
 main = do
-  putStrLn $ show (intersectionPointFor (LineSegment topRight bottomLeft) (LineSegment topLeft bottomRight))
+  putStrLn $ show $ onlyUniquePieces $ makeAPieceForEachLineSegment $ allPossibleLinesFor thePoints
