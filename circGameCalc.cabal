@@ -18,4 +18,8 @@ test-suite mainTests
   default-language:    Haskell2010
   type: exitcode-stdio-1.0
   build-depends: base >=4.7 && <4.8,
-                 QuickCheck
+                 QuickCheck,
+                 HUnit,
+                 test-framework,
+                 test-framework-hunit,
+                 test-framework-quickcheck2
