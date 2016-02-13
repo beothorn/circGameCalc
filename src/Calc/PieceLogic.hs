@@ -14,7 +14,7 @@ module Calc.PieceLogic where
 --                     -1,-2    1,-2                  --
 --------------------------------------------------------
 
-data Point' = Point {x :: Float, y :: Float} deriving (Show)
+data Point' = Point Float Float deriving (Show)
 
 instance Eq Point' where
   (Point x y) == (Point x2 y2) = (abs (x-x2) < 0.01) && ( abs (y-y2) < 0.01)
