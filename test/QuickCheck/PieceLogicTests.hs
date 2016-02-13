@@ -18,7 +18,7 @@ fac n = product [1..n]
 prop_allLinesSize :: [Point'] -> Bool
 prop_allLinesSize [] = True
 prop_allLinesSize (x: []) = True
-prop_allLinesSize points = length (allPossibleLinesFor points) == (fac p) `div` ((fac n) * (fac (n-p))) where
+prop_allLinesSize points = length (allPossibleLinesFor points) == (fac n) `div` ((fac p) * (fac (n-p))) where
   p = 2
   n = length points
 
