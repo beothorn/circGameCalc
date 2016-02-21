@@ -5,6 +5,7 @@ author:              Beothorn
 maintainer:          beothorn@example.com
 build-type:          Simple
 cabal-version:       >=1.10
+license:             Apache-2
 
 executable circGameCalc
   hs-source-dirs:      src
@@ -23,3 +24,4 @@ test-suite mainTests
                  test-framework,
                  test-framework-hunit,
                  test-framework-quickcheck2
+  x-uses-tf:      true

@@ -12,15 +12,17 @@ instance Arbitrary Point' where
      Blind y <- arbitrary
      return $ Point x y
 
+
+fac :: Integer -> Integer
 fac n = product [1..n]
 
 --allPossibleLinesFor :: [Point'] -> [LineSegment']
 prop_allLinesSize :: [Point'] -> Bool
 prop_allLinesSize [] = True
 prop_allLinesSize (x: []) = True
-prop_allLinesSize points = length (allPossibleLinesFor points) == (fac n) `div` ((fac p) * (fac (n-p))) where
-  p = 2
-  n = length points
+prop_allLinesSize points = toInteger (length (allPossibleLinesFor points)) == toInteger ((fromIntegral $ fac n) `div` ((fromIntegral $ fac p) * (fromIntegral $ fac (n-p)))) where
+  p = 2::Integer
+  n = toInteger (length points)
 
 qcPieceLogicSuite :: Test
 qcPieceLogicSuite = testGroup "QuickCheckPieceLogic"

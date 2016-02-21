@@ -56,7 +56,7 @@ aFor :: LineSegment' -> Float
 aFor (LineSegment (Point x y) (Point x2 y2)) = (y2 - y) / (x2 - x)
 
 bFor :: LineSegment' -> Float
-bFor line@(LineSegment (Point x y) (Point x2 y2)) = y - (aFor line) * x
+bFor line@(LineSegment (Point x y) (Point x2 y2)) = y - aFor line * x
 
 maybeCommonPointFor :: LineSegment' -> LineSegment' -> Maybe Point'
 maybeCommonPointFor (LineSegment l1p1 l1p2) (LineSegment l2p1 l2p2)
@@ -67,12 +67,12 @@ maybeCommonPointFor (LineSegment l1p1 l1p2) (LineSegment l2p1 l2p2)
   | otherwise = Nothing
 
 commonPointExistFor :: LineSegment' -> LineSegment' -> Bool
-commonPointExistFor l1 l2 = (maybeCommonPointFor l1 l2) /= Nothing
+commonPointExistFor l1 l2 = maybeCommonPointFor l1 l2 /= Nothing
 
 intersectionPointFor :: LineSegment' -> LineSegment' -> Maybe Point'
 intersectionPointFor l1 l2
   | commonPointExistFor l1 l2 = maybeCommonPointFor l1 l2
-  | (aFor l1) == (aFor l2) = Nothing
+  | (aFor l1) == aFor l2 = Nothing
   | otherwise = Just (Point x y)
     where
       aForL1 = aFor l1
